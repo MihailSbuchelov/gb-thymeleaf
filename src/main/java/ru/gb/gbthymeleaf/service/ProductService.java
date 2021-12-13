@@ -47,6 +47,7 @@ public class ProductService {
         return productDao.findAll();
     }
 
+    @Transactional(propagation = Propagation.NEVER, isolation = Isolation.DEFAULT)
     public void deleteById(Long id) {
         try {
             productDao.deleteById(id);
@@ -54,11 +55,6 @@ public class ProductService {
             log.error("No such id in DB: " + e.getMessage());
         }
     }
-
-
-
-
-
 
     @Transactional(propagation = Propagation.NEVER, isolation = Isolation.DEFAULT)
     public long count() {
