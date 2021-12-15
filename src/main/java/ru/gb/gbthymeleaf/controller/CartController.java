@@ -22,13 +22,13 @@ public class CartController {
 
     @GetMapping
     public String addProduct(@RequestParam(name = "id", required = false) Long id) {
-        cartService.addProduct(productService.findById(id));
+        cartService.addProduct(productService.findById(id), cartService.getCurCartId());
         return "redirect:/cart/all";
     }
 
     @GetMapping("/delete")
     public String deleteById(@RequestParam(name = "id") Long id) {
-        cartService.delProduct(productService.findById(id), cartService.getCurCartId());
+        cartService.delProduct(productService.findById(id));
         return "redirect:/cart/all";
     }
 }

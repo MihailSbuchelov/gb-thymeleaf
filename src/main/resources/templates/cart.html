@@ -10,7 +10,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<div th:replace="~{navbar :: navi(ProductList)}"></div>
+<div th:replace="~{navbar :: navi(Cart)}"></div>
 
 <div class="container">
     <span th:if="${products.size() == 0}">Товаров в корзине нет</span>

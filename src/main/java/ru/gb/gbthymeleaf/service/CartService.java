@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gb.gbthymeleaf.dao.CartDao;
-import ru.gb.gbthymeleaf.dao.ProductDao;
 import ru.gb.gbthymeleaf.entity.Cart;
 import ru.gb.gbthymeleaf.entity.Product;
 import ru.gb.gbthymeleaf.entity.enums.CartStatus;
@@ -20,23 +20,40 @@ public class CartService {
     private CartDao cartDao;
     private Cart cart = new Cart();
 
-
-    public void addProduct(Product product) {
+    @Transactional
+    public void addProduct(Product product, Long cartId) {
         cart.addProduct(product);
+        if (cart.getStatus().equals(CartStatus.EMPTY.getTitle())) {
+            cart.setStatus(CartStatus.NOT_EMPTY.getTitle());
+        }
         cartDao.save(cart);
     }
 
-    public void delProduct(Product product, Long cartId) {
-        Cart cart = cartDao.findById(cartId).get();
-        cart.getProducts().remove(product);
-        if(cart.getProducts().isEmpty()){
+    @Transactional
+    public void delProduct(Product product) {
+        Set<Product> productSet = cart.getProducts();
+        Iterator<Product> itr = productSet.iterator();
+        while (itr.hasNext()) {
+            Product p = itr.next();
+            if (p.getId() == product.getId()) {
+                itr.remove();
+                return;
+            }
+        }
+        cart.setProducts(productSet);
+        if (cart.getProducts().isEmpty()) {
             cart.setStatus(CartStatus.EMPTY.getTitle());
         }
         cartDao.save(cart);
     }
 
+    @Transactional
     public Set<Product> getSetProducts() {
-        return cartDao.findById(cart.getId()).get().getProducts();
+        if (cart.getId() == null) {
+            cart.setStatus(CartStatus.EMPTY.getTitle());
+            cartDao.save(cart);
+        }
+        return cart.getProducts();
     }
 
     public Long getCurCartId() {

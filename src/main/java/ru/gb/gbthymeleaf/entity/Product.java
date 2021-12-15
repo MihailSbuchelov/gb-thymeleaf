@@ -23,7 +23,8 @@ import java.util.Set;
 @Table(name = "product")
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "title")
@@ -53,7 +54,7 @@ public class Product {
     @Column(name = "status")
     private Status status;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "cart_product",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "cart_id"))

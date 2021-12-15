@@ -23,9 +23,9 @@ public class Cart {
     private Long id;
 
     @Column(name = "status")
-    private String status = CartStatus.NOT_EMPTY.getTitle();
+    private String status = CartStatus.EMPTY.getTitle();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany
     @JoinTable(name = "cart_product",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
