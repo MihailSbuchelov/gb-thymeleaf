@@ -21,7 +21,7 @@ public class CartService {
     private Cart cart = new Cart();
 
     @Transactional
-    public void addProduct(Product product, Long cartId) {
+    public void addProduct(Product product) {
         cart.addProduct(product);
         if (cart.getStatus().equals(CartStatus.EMPTY.getTitle())) {
             cart.setStatus(CartStatus.NOT_EMPTY.getTitle());

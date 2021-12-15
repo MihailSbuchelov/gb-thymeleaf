@@ -22,7 +22,7 @@ public class CartController {
 
     @GetMapping
     public String addProduct(@RequestParam(name = "id", required = false) Long id) {
-        cartService.addProduct(productService.findById(id), cartService.getCurCartId());
+        cartService.addProduct(productService.findById(id));
         return "redirect:/cart/all";
     }
 
