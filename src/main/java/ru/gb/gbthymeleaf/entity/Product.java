@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,7 +23,8 @@ import java.time.LocalDateTime;
 @Table(name = "product")
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "title")
@@ -51,6 +53,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
+    @ManyToMany
+    @JoinTable(name = "cart_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_id"))
+    private Set<Cart> carts;
 
     @Override
     public String toString() {
